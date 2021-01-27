@@ -2,6 +2,7 @@ const addButton = document.querySelector("#add-button");
 const sortButton = document.querySelector("#sort-button");
 const list = document.querySelector(".todo-list");
 const input = document.querySelector("#text-input");
+const priority = document.querySelector("#priority-selector")
 
 addButton.addEventListener("click", addToDo)
 // todoList.addEventListener("click", deleteCheck)
@@ -11,7 +12,7 @@ function addToDo(toDo) {
   const text = `<li class="item">
                     <i class="far fa-circle" job="complete"></i>
                     <div class="todo-priority">
-                    1
+                    ${priority.value}
                     </div>
                     <div class="todo-created-at">
                     2020-06-18 11:51:12
@@ -27,4 +28,4 @@ function addToDo(toDo) {
     list.insertAdjacentHTML(position, text);
    
 }
-addToDo("eat");
+addToDo("bla");
