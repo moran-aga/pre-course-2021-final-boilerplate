@@ -4,7 +4,13 @@ const list = document.querySelector(".todo-list");
 const input = document.querySelector("#text-input");
 const priority = document.querySelector("#priority-selector")
 
-addButton.addEventListener("click", addToDo)
+addButton.addEventListener("click", function(event){
+    const toDo = input.value;
+    if (toDo) {
+        addToDo(toDo);
+    } 
+    input.value = "";
+});
 // todoList.addEventListener("click", deleteCheck)
 // sortButton.addEventListener("click", sortToDo)
 
