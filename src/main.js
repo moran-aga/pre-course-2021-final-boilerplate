@@ -18,7 +18,7 @@ function updateCount() {
   title.innerHTML = `You have ${count} to-do's.`;
 }
 
-function addToDo(todo, id, done) {
+function addToDo(todoText, priority, today, id, done) {
   
   const DONE = done ? checkIcon : uncheckIcon;
   // const LINE = done ? LINETHROUGH : "";
@@ -26,13 +26,13 @@ function addToDo(todo, id, done) {
   const todoItem = `<li class="item">
     <i class="${DONE}" job="complete" id="${id}"></i>
     <div class="todo-priority">
-    ${priority.value}
+    ${priority}
     </div>
     <div class="todo-created-at">
     ${today}
     </div>
     <div class="todo-text">
-    ${todo}
+    ${todoText}
     </div>
     <i class="far fa-trash-alt" job="delete" id="${id}"></i>
     </li>`;
@@ -45,9 +45,11 @@ function addToDo(todo, id, done) {
 addTodoButton.addEventListener("click", function (event) {
   const todoValue = newTodoInput.value;
   if (todoValue) {
-    addToDo(todoValue, id, false);
+    addToDo(todoValue, priority.value, today, id, false);
     LIST.push({
       name: todoValue,
+      priority : priority.value,
+      date : today,
       id: id,
       done: false,
     });
@@ -79,7 +81,15 @@ todoList.addEventListener("click", function (event) {
     completeToDo(element);
   } else if (elementJob === "delete") removeToDo(element);
 });
-// sortButton.addEventListener("click", sortToDo)
+
+sortButton.addEventListener("click", function() {
+LIST.sort((todoItem1,todoItem2) => todoItem1.priority - todoItem2.priority);
+todoList.innerHTML = "";
+for (let i =0; i< LIST.length; i++) {
+    addToDo(LIST[i].name, LIST[i].priority, LIST[i].date,);
+}
+});
+
 
 // ##################################### JS BIN
 const saveTodoInJsonBin = async (todoList) => {
