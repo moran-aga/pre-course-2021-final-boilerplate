@@ -4,7 +4,11 @@ const todoList = document.querySelector(".todo-list");
 const newTodoInput = document.querySelector("#text-input");
 const priority = document.querySelector("#priority-selector");
 const title = document.querySelector("#title");
-const today = new Date();
+
+let time = new Date();
+let timeValue = document.createElement("div"); 
+time = time.toISOString().split('T')[0] + " " + time.toTimeString().split(" ")[0];     
+timeValue.textContent = time;
 
 const checkIcon = "far fa-check-circle";
 const uncheckIcon = "far fa-circle";
@@ -18,7 +22,7 @@ function updateCount() {
   title.innerHTML = `You have ${count} to-do's.`;
 }
 
-function addToDo(todoText, priority, today, id, done) {
+function addToDo(todoText, priority, time, done) {
   
   const DONE = done ? checkIcon : uncheckIcon;
   // const LINE = done ? LINETHROUGH : "";
@@ -29,7 +33,7 @@ function addToDo(todoText, priority, today, id, done) {
     ${priority}
     </div>
     <div class="todo-created-at">
-    ${today}
+    ${time}
     </div>
     <div class="todo-text">
     ${todoText}
@@ -45,11 +49,11 @@ function addToDo(todoText, priority, today, id, done) {
 addTodoButton.addEventListener("click", function (event) {
   const todoValue = newTodoInput.value;
   if (todoValue) {
-    addToDo(todoValue, priority.value, today, id, false);
+    addToDo(todoValue, priority.value, time, id, false);
     LIST.push({
       name: todoValue,
       priority : priority.value,
-      date : today,
+      date : time,
       id: id,
       done: false,
     });
