@@ -1,0 +1,158 @@
+body{
+    padding: 0;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.header-section {
+    width: 380px;
+    height:200px;
+    background-image: url(./img/bg2.jpg);
+    background-size: 100% 200%;
+    background-repeat: no-repeat;
+    border-radius: 15px 15px 0 0;
+    position: relative;
+}
+
+.view-section{
+    width:380px;
+    height: 350px;
+    max-height:350px;
+    background-color: #FFF;
+    overflow: auto;
+}
+
+.todo-container::-webkit-scrollbar { 
+    display: none; 
+}
+
+.todo-container {
+    padding:0;
+    margin:0;
+}
+
+.todo-container ul {
+    padding:0;
+    margin:0;
+}
+
+li {
+    display: inline-block;
+    display: flex;
+}
+
+.item{
+    width:380px;
+    height: 45px;
+    min-height: 45px;
+    position: relative;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.fa-circle{
+    position: absolute;
+    font-size: 25px;
+    padding-left:5px;
+    left:5px;
+    top:10px;
+}
+
+.fa-circle:hover{
+    cursor: pointer;
+}
+
+.fa-trash-alt {
+    position: absolute;
+    font-size: 25px;
+    right:15px;
+    top:10px;
+}
+
+.fa-trash-alt:hover{
+    color:#af0000;
+    cursor: pointer;
+}
+
+.fa-check-circle{
+    color:#6eb200;
+}
+
+.todo-text{
+    padding:0;
+    margin:0;
+    margin-right: 10px;
+    padding-left:45px;
+    font-size: 20px;
+    left:50px;
+    top:5px;
+    background-color: #FFF;
+    max-width:285px;
+}
+
+.todo-priority {
+    padding:0;
+    margin:0;
+    margin-right: 10px;
+    font-size: 20px;
+    left:50px;
+    top:5px;
+    background-color: #FFF;
+    max-width:285px;
+}
+
+.todo-created-at {
+    padding:0;
+    margin:0;
+    font-size: 20px;
+    left:50px;
+    top:5px;
+    background-color: #FFF;
+    max-width:285px;
+}
+
+
+.control-section{
+    position: relative;
+    width: 360px;
+    height:40px;
+    background-color: #FFF;
+    padding: 10px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.control-section i{
+    position: absolute;
+    font-size: 40px;
+    color: #4162f6;
+    left: 0px;
+    height: 35px;
+}
+
+#add-button {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.control-section input{
+    position: absolute;
+    left: 50px;
+    height: 35px;
+    width: 250px;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    padding-left:10px;
+}
+
+#priority-selector {
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    right: 10px;
+    height: 35px;
+    width: 50px;  
+}
