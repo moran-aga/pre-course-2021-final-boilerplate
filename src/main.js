@@ -1,3 +1,5 @@
+"use strict"
+
 const addTodoButton = document.querySelector("#add-button");
 const sortButton = document.querySelector("#sort-button");
 const todoList = document.querySelector(".todo-list");
@@ -36,7 +38,7 @@ if(data) {
 
 function loadList (array) {
   array.forEach(function (item) {
-    addToDo(item.name, item.priority, item.date, item.id, item.done);
+    addToDo(item.name, item.priority, item.date, item.id, item.done, item.trash);
     updateCount();
   });
 }
@@ -51,8 +53,9 @@ function updateCount() {
   todoTasksCounter.innerHTML = count;
 }
 
-function addToDo(todoText, priority, time, id, done) {
-  
+function addToDo(todoText, priority, time, id, done, trash) {
+   
+  if (trash) {return; }
   const DONE = done ? checkIcon : uncheckIcon;
   const LINE = done ? LINETHROUGH : "";
 
@@ -78,13 +81,14 @@ function addToDo(todoText, priority, time, id, done) {
 addTodoButton.addEventListener("click", function (event) {
   const todoValue = newTodoInput.value;
   if (todoValue) {
-    addToDo(todoValue, priority.value, time, id, false);
+    addToDo(todoValue, priority.value, time, id, false, false);
     LIST.push({
       name: todoValue,
       priority : priority.value,
       date : time,
       id: id,
       done: false,
+      trash: false
     });
 
     localStorage.setItem("TODO", JSON.stringify(LIST));
@@ -132,3 +136,21 @@ for (let i =0; i< LIST.length; i++) {
 localStorage.setItem("TODO", JSON.stringify(LIST));
 });
 
+// let select = document.getElementById("priority-selector");
+// switch (select) {
+//   case 1:
+//     document.getElementById("Result").innerHTML = "You chose Item A.";
+//     break;
+//   case 2:
+//     console.log(orange)
+//     break;
+//   case 3:
+//     document.getElementById("Result").innerHTML = "You chose Item A.";
+//     break;
+//   // case 4:
+//   //   console.log(orange)
+//   //   break;
+//   // case 5:
+//   //     console.log(orange)
+//   //     break;
+// }
