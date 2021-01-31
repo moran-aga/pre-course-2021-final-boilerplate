@@ -31,7 +31,8 @@ if(data) {
 
 function loadList (array) {
   array.forEach(function (item) {
-    addToDo(item.name, item.priority, item.date, item.done);
+    addToDo(item.name, item.priority, item.date, item.id, item.done);
+    updateCount();
   });
 }
 
@@ -45,7 +46,7 @@ function updateCount() {
   todoTasksCounter.innerHTML = `You have ${count} to-do's.`;
 }
 
-function addToDo(todoText, priority, time, done) {
+function addToDo(todoText, priority, time, id, done) {
   
   const DONE = done ? checkIcon : uncheckIcon;
   const LINE = done ? LINETHROUGH : "";

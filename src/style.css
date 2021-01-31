@@ -62,8 +62,7 @@ body{
 
 .sort i:hover{
     cursor: pointer;
-    text-shadow: 1px 3px 5px #000;
-    
+    text-shadow: 1px 3px 5px #000; 
 }
 
 #todoTasksCounter {
@@ -145,6 +144,11 @@ li {
 
 .fa-check-circle{
     color:#6eb200;
+    position: absolute;
+    font-size: 25px;
+    padding-left:5px;
+    left:5px;
+    top:10px;
 }
 
 .todo-text{
