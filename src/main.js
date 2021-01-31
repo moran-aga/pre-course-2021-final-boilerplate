@@ -3,7 +3,8 @@ const sortButton = document.querySelector("#sort-button");
 const todoList = document.querySelector(".todo-list");
 const newTodoInput = document.querySelector("#text-input");
 const priority = document.querySelector("#priority-selector");
-const title = document.querySelector("#title");
+const todoTasksCounter = document.querySelector("#todoTasksCounter");
+const clearLocalStorage = document.querySelector(".clear");
 
 let time = new Date();
 let timeValue = document.createElement("div"); 
@@ -12,24 +13,46 @@ timeValue.textContent = time;
 
 const checkIcon = "far fa-check-circle";
 const uncheckIcon = "far fa-circle";
+const LINETHROUGH ="lineThrough";
 
-// const LINETHROUGH ="lineThrough";
 let LIST = [];
 let id = 0;
 
+let data = localStorage.getItem("TODO");
+
+if(data) {
+    LIST = JSON.parse(data);
+    id = LIST.length;
+    loadList(LIST);
+} else {
+    LIST = [];
+    id = 0;
+}
+
+function loadList (array) {
+  array.forEach(function (item) {
+    addToDo(item.name, item.priority, item.date, item.done);
+  });
+}
+
+clearLocalStorage.addEventListener("click", function(){
+  localStorage.clear();
+  location.reload();
+});
+
 function updateCount() {
   const count = todoList.childElementCount;
-  title.innerHTML = `You have ${count} to-do's.`;
+  todoTasksCounter.innerHTML = `You have ${count} to-do's.`;
 }
 
 function addToDo(todoText, priority, time, done) {
   
   const DONE = done ? checkIcon : uncheckIcon;
-  // const LINE = done ? LINETHROUGH : "";
+  const LINE = done ? LINETHROUGH : "";
 
   const todoItem = `<li class="item">
     <i class="${DONE}" job="complete" id="${id}"></i>
-    <div class="todo-text">
+    <div class="todo-text ${LINE}">
     ${todoText}
     </div>
     <div class="todo-priority">
@@ -57,12 +80,14 @@ addTodoButton.addEventListener("click", function (event) {
       id: id,
       done: false,
     });
+
+    localStorage.setItem("TODO", JSON.stringify(LIST));
     id++;
   }
   newTodoInput.value = "";
   updateCount();
 
-  (saveTodoInJsonBin(LIST));
+  // (saveTodoInJsonBin(LIST));
 });
 
 function completeToDo(element) {
@@ -71,21 +96,25 @@ function completeToDo(element) {
   } else {
     element.classList.value = checkIcon;
   }
+  element.parentNode.querySelector(".todo-text").classList.toggle(LINETHROUGH);
   LIST[element.id].done = LIST[element.id].done ? false : true;
 }
 
 function removeToDo(element) {
   element.parentNode.parentNode.removeChild(element.parentNode);
+  LIST[element.id].trash = true;
 }
 
 todoList.addEventListener("click", function (event) {
-  console.log(event);
-  const element = event.target;
+  let element = event.target;
   const elementJob = element.attributes.job.value;
 
   if (elementJob === "complete") {
     completeToDo(element);
-  } else if (elementJob === "delete") removeToDo(element);
+  } else if (elementJob === "delete") 
+    removeToDo(element);
+
+    localStorage.setItem("TODO", JSON.stringify(LIST));
 });
 
 sortButton.addEventListener("click", function() {
@@ -94,6 +123,7 @@ todoList.innerHTML = "";
 for (let i =0; i< LIST.length; i++) {
     addToDo(LIST[i].name, LIST[i].priority, LIST[i].date,);
 }
+localStorage.setItem("TODO", JSON.stringify(LIST));
 });
 
 // const saveTodoInJsonBin = async (todoList) => {
@@ -112,12 +142,12 @@ for (let i =0; i< LIST.length; i++) {
 
 // console.log (saveTodoInJsonBin(todoList));
 
-const saveTodoInJsonBin = async (LIST) => {
-let response = await fetch(`https://api.jsonbin.io/v3/b/60144f46ef99c57c734ba670/latest`);
-    let jsonResponse = await response.json(); 
-    let recordResponse = jsonResponse["record"];
-    LIST = recordResponse["my-todo"];
-await fetch(`https://api.jsonbin.io/v3/b/60144f46ef99c57c734ba670`,{method:"put",headers: {"Content-Type": "application/json",},body: JSON.stringify({"my-todo":todoList})});
-}
+// const saveTodoInJsonBin = async (LIST) => {
+// let response = await fetch(`https://api.jsonbin.io/v3/b/60144f46ef99c57c734ba670/latest`);
+//     let jsonResponse = await response.json(); 
+//     let recordResponse = jsonResponse["record"];
+//     LIST = recordResponse["my-todo"];
+// await fetch(`https://api.jsonbin.io/v3/b/60144f46ef99c57c734ba670`,{method:"put",headers: {"Content-Type": "application/json",},body: JSON.stringify({"my-todo":todoList})});
+// }
 
-(saveTodoInJsonBin(LIST));
+// (saveTodoInJsonBin(LIST));
