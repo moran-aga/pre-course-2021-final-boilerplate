@@ -3,17 +3,22 @@ const sortButton = document.querySelector("#sort-button");
 const todoList = document.querySelector(".todo-list");
 const newTodoInput = document.querySelector("#text-input");
 const priority = document.querySelector("#priority-selector");
-const todoTasksCounter = document.querySelector("#todoTasksCounter");
+const todoTasksCounter = document.querySelector("#counter");
 const clearLocalStorage = document.querySelector(".clear");
-
-let time = new Date();
-let timeValue = document.createElement("div"); 
-time = time.toISOString().split('T')[0] + " " + time.toTimeString().split(" ")[0];     
-timeValue.textContent = time;
+const dateElement = document.querySelector("#todayDate");
 
 const checkIcon = "far fa-check-circle";
 const uncheckIcon = "far fa-circle";
 const LINETHROUGH ="lineThrough";
+
+const options = {weekday : "long", month : "short", year : "numeric"};
+const today = new Date();
+dateElement.innerHTML = today.toLocaleDateString("en-US", options);
+
+let time = new Date();
+let timeValue = document.createElement("div"); 
+time = time.toTimeString().split(" ")[0];     
+timeValue.textContent = time;
 
 let LIST = [];
 let id = 0;
@@ -43,7 +48,7 @@ clearLocalStorage.addEventListener("click", function(){
 
 function updateCount() {
   const count = todoList.childElementCount;
-  todoTasksCounter.innerHTML = `You have ${count} to-do's.`;
+  todoTasksCounter.innerHTML = count;
 }
 
 function addToDo(todoText, priority, time, id, done) {
@@ -119,7 +124,7 @@ todoList.addEventListener("click", function (event) {
 });
 
 sortButton.addEventListener("click", function() {
-LIST.sort((todoItem1,todoItem2) => todoItem1.priority - todoItem2.priority);
+LIST.sort((todoItem1,todoItem2) => todoItem2.priority - todoItem1.priority);
 todoList.innerHTML = "";
 for (let i =0; i< LIST.length; i++) {
     addToDo(LIST[i].name, LIST[i].priority, LIST[i].date,);
@@ -127,28 +132,3 @@ for (let i =0; i< LIST.length; i++) {
 localStorage.setItem("TODO", JSON.stringify(LIST));
 });
 
-// const saveTodoInJsonBin = async (todoList) => {
-//   const url = `https://api.jsonbin.io/v3/b/60144f46ef99c57c734ba670`;
-//   const API_KEY = "$2b$10$K5A7Ayrm2fDiQPeke9Ps1.LJY0kzYeAXwZzLm8qbiBv0r5gfskzI.";
-//   const jsonBinSaveRequest = await fetch(url, {
-//     method: "PUT",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "X-Master-Key": API_KEY,
-//     },
-//     body: JSON.stringify({"my-todo": [todoList]}),
-// });
-// console.log("data saved in js bin");
-// }
-
-// console.log (saveTodoInJsonBin(todoList));
-
-// const saveTodoInJsonBin = async (LIST) => {
-// let response = await fetch(`https://api.jsonbin.io/v3/b/60144f46ef99c57c734ba670/latest`);
-//     let jsonResponse = await response.json(); 
-//     let recordResponse = jsonResponse["record"];
-//     LIST = recordResponse["my-todo"];
-// await fetch(`https://api.jsonbin.io/v3/b/60144f46ef99c57c734ba670`,{method:"put",headers: {"Content-Type": "application/json",},body: JSON.stringify({"my-todo":todoList})});
-// }
-
-// (saveTodoInJsonBin(LIST));

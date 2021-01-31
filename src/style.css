@@ -13,7 +13,6 @@ body{
     -moz-osx-font-smoothing: grayscale;
 }
 
-
 .header-section {
     width: 380px;
     height:200px;
@@ -31,6 +30,7 @@ body{
     right:20px;
     top: 20px;
 }
+
 .clear i{
     font-size: 30px;
     color: #FFF;
@@ -65,13 +65,21 @@ body{
     text-shadow: 1px 3px 5px #000; 
 }
 
-#todoTasksCounter {
+#counterDiv {
     font-size: 30px;
     color: white;
     position: absolute;
     right:80px;
     bottom: 50px;
     top: 50px; 
+}
+
+#todayDate{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: #FFF;
+    font-size: 25px;
 }
 
 .view-section{
@@ -184,7 +192,6 @@ li {
     max-width:285px;
 }
 
-
 .control-section{
     position: relative;
     width: 360px;
@@ -216,7 +223,7 @@ li {
     background-color: transparent;
     border: none;
     font-size: 20px;
-    padding-left:10px;
+    padding-left:10px;  
 }
 
 #priority-selector {

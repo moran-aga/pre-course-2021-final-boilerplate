@@ -1,4 +1,32 @@
+// const saveTodoInJsonBin = async (todoList) => {
+//   const url = `https://api.jsonbin.io/v3/b/60144f46ef99c57c734ba670`;
+//   const API_KEY = "$2b$10$K5A7Ayrm2fDiQPeke9Ps1.LJY0kzYeAXwZzLm8qbiBv0r5gfskzI.";
+//   const jsonBinSaveRequest = await fetch(url, {
+//     method: "PUT",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "X-Master-Key": API_KEY,
+//     },
+//     body: JSON.stringify({"my-todo": [todoList]}),
+// });
+// console.log("data saved in js bin");
+// }
 
+// console.log (saveTodoInJsonBin(todoList));
+
+// const saveTodoInJsonBin = async (LIST) => {
+// let response = await fetch(`https://api.jsonbin.io/v3/b/60144f46ef99c57c734ba670/latest`);
+//     let jsonResponse = await response.json(); 
+//     let recordResponse = jsonResponse["record"];
+//     LIST = recordResponse["my-todo"];
+// await fetch(`https://api.jsonbin.io/v3/b/60144f46ef99c57c734ba670`,{method:"put",headers: {"Content-Type": "application/json",},body: JSON.stringify({"my-todo":todoList})});
+// }
+
+// (saveTodoInJsonBin(LIST));
+  
+  
+  
+  
   const saveTodoInJsonBin = async (todoList) => {
     //     let req = new XMLHttpRequest();
     // req.onreadystatechange = () => {
