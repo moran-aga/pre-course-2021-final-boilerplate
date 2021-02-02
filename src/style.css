@@ -93,6 +93,11 @@ body{
     overflow: auto;
 }
 
+/* .view-section, .dark-mode  {
+    background-color: black;
+} */
+
+
 .todo-container::-webkit-scrollbar { 
     display: none; 
 }
@@ -300,5 +305,5 @@ li {
       align-items: center;
       
     }
-  }
- */
+  } */
+

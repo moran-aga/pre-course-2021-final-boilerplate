@@ -25,7 +25,7 @@ timeValue.textContent = time;
 let LIST = [];
 let id = 0;
 
-let data = localStorage.getItem("my-todo");
+let data = localStorage.getItem("TODO");
 
 if(data) {
     LIST = JSON.parse(data);
@@ -76,7 +76,6 @@ function addToDo(todoText, priority, time, id, done, trash) {
   const position = "beforeend";
 
   todoList.insertAdjacentHTML(position, todoItem);
-
 }
 
 addTodoButton.addEventListener("click", function (event) {
@@ -91,9 +90,8 @@ addTodoButton.addEventListener("click", function (event) {
       done: false,
       trash: false
     });
-  
 
-    localStorage.setItem("my-todo", JSON.stringify(LIST));
+    localStorage.setItem("TODO", JSON.stringify(LIST));
     id++;
   }
   newTodoInput.value = "";
@@ -126,7 +124,7 @@ todoList.addEventListener("click", function (event) {
   } else if (elementJob === "delete") 
     removeToDo(element);
 
-    localStorage.setItem("my-todo", JSON.stringify(LIST));
+    localStorage.setItem("TODO", JSON.stringify(LIST));
 });
 
 sortButton.addEventListener("click", function() {
@@ -135,19 +133,5 @@ todoList.innerHTML = "";
 for (let i =0; i< LIST.length; i++) {
     addToDo(LIST[i].name, LIST[i].priority, LIST[i].date,);
 }
-localStorage.setItem("my-todo", JSON.stringify(LIST));
+localStorage.setItem("TODO", JSON.stringify(LIST));
 });
-
-async function readDataFromJsonBin () {
-  let response = await fetch('https://api.jsonbin.io/v3/b/6017d548dde2a87f921b9f2b/latest');
-  let jsonResponse = await response.json(); 
-  let LIST = jsonResponse["record"];
-  return LIST["my-todo"]; 
-}
-
-async function saveTodoInJsonBin () {
- await fetch ("https://api.jsonbin.io/v3/b/6017d548dde2a87f921b9f2b",{method : "put", headers : {"content-type" : "application/json"}, body : JSON.stringify({"my-todo": LIST})});
-}
-
-
-
