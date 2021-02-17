@@ -1,5 +1,13 @@
 "use strict"
 
+let LIST = [];
+let id = 0;
+const spinner = document.getElementById("spinner");
+
+showSpinner();
+readDataFromJsonBin();
+hideSpinner();
+
 const addTodoButton = document.querySelector("#add-button");
 const sortButton = document.querySelector("#sort-button");
 const todoList = document.querySelector(".todo-list");
@@ -8,6 +16,7 @@ const priority = document.querySelector("#priority-selector");
 const todoTasksCounter = document.querySelector("#counter");
 const clearLocalStorage = document.querySelector(".clear");
 const dateElement = document.querySelector("#todayDate");
+
 
 const checkIcon = "far fa-check-circle";
 const uncheckIcon = "far fa-circle";
@@ -22,10 +31,23 @@ let timeValue = document.createElement("div");
 time = time.toTimeString().split(" ")[0];     
 timeValue.textContent = time;
 
-let LIST = [];
-let id = 0;
 
-let data = localStorage.getItem("TODO");
+
+async function updatedList (LIST) {
+  let data = await readDataFromJsonBin();
+  console.log(data);
+  if (data) {
+    LIST = data["my-todo"];
+    id = LIST.length;
+    loadList(LIST);
+    } else {
+        LIST = [];
+        id = 0;
+    }
+}
+console.log(LIST);
+
+let data = localStorage.getItem("my-todo");
 
 if(data) {
     LIST = JSON.parse(data);
@@ -38,7 +60,7 @@ if(data) {
 
 function loadList (array) {
   array.forEach(function (item) {
-    addToDo(item.name, item.priority, item.date, item.id, item.done, item.trash);
+    addToDo(item.text, item.priority, item.date, item.id, item.done);
     updateCount();
   });
 }
@@ -53,14 +75,13 @@ function updateCount() {
   todoTasksCounter.innerHTML = count;
 }
 
-function addToDo(todoText, priority, time, id, done, trash) {
-   
-  if (trash) {return; }
+function addToDo(todoText, priority, time, id, done) {
+
   const DONE = done ? checkIcon : uncheckIcon;
   const LINE = done ? LINETHROUGH : "";
 
   const todoItem = `<li class="item">
-    <i class="${DONE}" job="complete" id="${id}"></i>
+    <i class="${DONE}" data-job="complete" id="${id}"></i>
     <div class="todo-text ${LINE}">
     ${todoText}
     </div>
@@ -70,7 +91,7 @@ function addToDo(todoText, priority, time, id, done, trash) {
     <div class="todo-created-at">
     ${time}
     </div>
-    <i class="far fa-trash-alt" job="delete" id="${id}"></i>
+    <i class="far fa-trash-alt" data-job="delete" id="${id}"></i>
     </li>`;
 
   const position = "beforeend";
@@ -81,24 +102,24 @@ function addToDo(todoText, priority, time, id, done, trash) {
 addTodoButton.addEventListener("click", function (event) {
   const todoValue = newTodoInput.value;
   if (todoValue) {
-    addToDo(todoValue, priority.value, time, id, false, false);
+    addToDo(todoValue, priority.value, time, id, false);
     LIST.push({
-      name: todoValue,
+      text: todoValue,
       priority : priority.value,
       date : time,
       id: id,
       done: false,
-      trash: false
     });
-
-    localStorage.setItem("TODO", JSON.stringify(LIST));
+    localStorage.setItem("my-todo", JSON.stringify(LIST));
     id++;
   }
   newTodoInput.value = "";
   updateCount();
 
-  // (saveTodoInJsonBin(LIST));
+  saveTodoInJsonBin();
+
 });
+
 
 function completeToDo(element) {
   if (element.classList.value === checkIcon) {
@@ -108,30 +129,72 @@ function completeToDo(element) {
   }
   element.parentNode.querySelector(".todo-text").classList.toggle(LINETHROUGH);
   LIST[element.id].done = LIST[element.id].done ? false : true;
+  saveTodoInJsonBin();
 }
 
 function removeToDo(element) {
+  let itemTime = element.parentElement.children[3].innerText;
+  for (let i = 0; i < LIST.length; i++) {
+  if(LIST[i].date === itemTime){
+    LIST.splice(i, 1);
+    // let myTodo = {'my-todo': LIST};
   element.parentNode.parentNode.removeChild(element.parentNode);
-  LIST[element.id].trash = true;
+  saveTodoInJsonBin();
+  }
 }
+}
+
 
 todoList.addEventListener("click", function (event) {
   let element = event.target;
-  const elementJob = element.attributes.job.value;
+  console.log(element);
+  const elementJob = element.dataset["job"];
+  console.log(elementJob);
 
   if (elementJob === "complete") {
     completeToDo(element);
   } else if (elementJob === "delete") 
     removeToDo(element);
 
-    localStorage.setItem("TODO", JSON.stringify(LIST));
+    localStorage.setItem("my-todo", JSON.stringify(LIST));
+    saveTodoInJsonBin();
+   
 });
 
+
 sortButton.addEventListener("click", function() {
-LIST.sort((todoItem1,todoItem2) => todoItem2.priority - todoItem1.priority);
+LIST = LIST.sort((todoItem1,todoItem2) => todoItem2.priority - todoItem1.priority);
 todoList.innerHTML = "";
 for (let i =0; i< LIST.length; i++) {
-    addToDo(LIST[i].name, LIST[i].priority, LIST[i].date,);
+    addToDo(LIST[i].text, LIST[i].priority, LIST[i].date,);
 }
-localStorage.setItem("TODO", JSON.stringify(LIST));
+localStorage.setItem("my-todo", JSON.stringify(LIST));
+saveTodoInJsonBin();
 });
+
+
+ async function readDataFromJsonBin () {
+  let response = await fetch('https://api.jsonbin.io/v3/b/6017d548dde2a87f921b9f2b/latest');
+  let jsonResponse = await response.json(); 
+  let recordResponse = jsonResponse["record"];
+  LIST = recordResponse["my-todo"]; 
+}
+
+
+async function saveTodoInJsonBin () {
+ await fetch ("https://api.jsonbin.io/v3/b/6017d548dde2a87f921b9f2b",{method : "put", headers : {"content-type" : "application/json"}, body : JSON.stringify({"my-todo": LIST})});
+}
+
+
+function showSpinner() {
+  spinner.className = "show";
+  setTimeout(() => {
+    spinner.className = spinner.className.replace("show", "");
+  }, 5000);
+}
+
+function hideSpinner() {
+  spinner.className = spinner.className.replace("show", "");
+}
+
+
